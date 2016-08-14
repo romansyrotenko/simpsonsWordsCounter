@@ -1,7 +1,9 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.text.BreakIterator;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
 
 public class WordsFromFilesCounter {
 
@@ -12,10 +14,10 @@ public class WordsFromFilesCounter {
     static HashMap<String, Integer> allUnicWords = new HashMap<String, Integer>();
 
 
-    public static void main(String args[]) throws FileNotFoundException {
+    public static void main(String args[]) throws IOException {
 
-        timeout = System.currentTimeMillis();
         String pathToFiles = getPathToFiles();
+        timeout = System.currentTimeMillis();
         readAndCalcFiles(pathToFiles);
         outputResults();
     }
@@ -32,21 +34,26 @@ public class WordsFromFilesCounter {
         if (pathToFiles.equals("")) {
             pathToFiles = DEFAULT_PATH_TO_FILES;
         }
+        scanner.close();
         return pathToFiles;
     }
 
-    private static void readAndCalcFiles(String pathToFiles) throws FileNotFoundException {
+    private static void readAndCalcFiles(String pathToFiles) throws IOException {
 
         File folder = new File(pathToFiles);
         File[] listOfFiles = folder.listFiles();
+        BufferedReader inputStream;
+        String sCurrentLine;
 
         for (int i = 0; i < listOfFiles.length; i++) {
 
             File file = listOfFiles[i];
-            if (file.isFile() && file.getName().endsWith(".txt")) {
-                Scanner scanner = new Scanner( new File(file.toURI()) );
-                String text = scanner.useDelimiter("\\A").next();
-                scanner.close();
+            if (file.isFile() && file.getName().endsWith(".txt") && !(file.length() == 0)) {
+                String text = null;
+                inputStream = new BufferedReader(new FileReader(file));
+                while ((sCurrentLine = inputStream.readLine()) != null) {
+                    text = text + sCurrentLine;
+                }
                 calcAllWords(text);
                 totalTreatedFiles++;
             }
