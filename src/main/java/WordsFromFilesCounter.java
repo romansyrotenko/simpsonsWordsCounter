@@ -85,12 +85,8 @@ public class WordsFromFilesCounter {
         if (!allUnicWords.containsKey(word)) {
             allUnicWords.put(word,1);
         } else {
-            for (Map.Entry entry : allUnicWords.entrySet()) {
-                if (entry.getKey().equals(word)) {
-                    entry.setValue((Integer) entry.getValue() + 1);
-                    break;
-                }
-            }
+            int tempValue = allUnicWords.get(word);
+            allUnicWords.put(word, tempValue + 1);
         }
     }
 
