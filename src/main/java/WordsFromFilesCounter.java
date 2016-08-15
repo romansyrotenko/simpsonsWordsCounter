@@ -10,14 +10,12 @@ public class WordsFromFilesCounter {
     static String DEFAULT_PATH_TO_FILES = "/home/sroman/Projects/IdeaProjects/jsonParseHtmlApp/";
     static int totalWordsCount = 0;
     static int totalTreatedFiles = 0;
-    static long timeout = 0;
-    static HashMap<String, Integer> allUnicWords = new HashMap<String, Integer>();
+    static HashMap<String, Integer> allUniqWords = new HashMap<String, Integer>();
 
 
     public static void main(String args[]) throws IOException {
 
         String pathToFiles = getPathToFiles();
-        timeout = System.currentTimeMillis();
         readAndCalcFiles(pathToFiles);
         outputResults();
     }
@@ -82,11 +80,11 @@ public class WordsFromFilesCounter {
 
     private static void addWordtoTable(String word) {
 
-        if (!allUnicWords.containsKey(word)) {
-            allUnicWords.put(word,1);
+        if (!allUniqWords.containsKey(word)) {
+            allUniqWords.put(word, 1);
         } else {
-            int tempValue = allUnicWords.get(word);
-            allUnicWords.put(word, tempValue + 1);
+            int tempValue = allUniqWords.get(word);
+            allUniqWords.put(word, tempValue + 1);
         }
     }
 
@@ -94,12 +92,10 @@ public class WordsFromFilesCounter {
 
         TreeMap<String, Integer> sortedMap;
 
-        sortedMap = sortHashMapByValue(allUnicWords);
-        timeout = System.currentTimeMillis() - timeout;
-        System.out.println("Main working time is:        " + timeout/1000 + " sec");
+        sortedMap = sortHashMapByValue(allUniqWords);
         System.out.println("Total treated files are:     " + totalTreatedFiles);
         System.out.println("Main count all words are:    " + totalWordsCount);
-        System.out.println("All count of unic aords are: " + allUnicWords.size());
+        System.out.println("All count of uniq words are: " + allUniqWords.size());
         System.out.println("\nTOP 100 Most frequency words:");
 
         int count = 0;
